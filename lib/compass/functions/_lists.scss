@@ -78,18 +78,19 @@
 }
 
 @if not(function-exists(compact)) {
-  @function compact($vars...) {
-    $first: nth($vars, 1);
+  @function compact($args...) {
+    $first: nth($args, 1);
     $sep: comma;
     $list: ();
-    @if length($vars) == 1 and type_of($first) == 'list' {
-        $vars: $first;
-        $sep: list-separator($vars);
+    @if length($args) == 1 and type_of($first) == 'list' {
+      $args: $first;
+      $sep: list-separator($args);
     }
-    @each $var in $vars {
-        @if $var {
-            $list: append($list, $var, $sep);
-        }
+    @for $index from 1 through length($args) {
+      $arg: nth($args, $index);
+      @if $arg {
+        $list: append($list, $arg, $sep);
+      }
     }
     @return $list;
   }
